@@ -20,18 +20,6 @@ bool SlotMachineScene::init() {
 	slotPos[2] = Vec2(98, -11);
 	currentSlot[0] = currentSlot[1] = currentSlot[2] = 0;
 
-	/*
-	auto label = Label::createWithTTF("You win!", "fonts/Marker Felt.ttf", 24);
-	if (label != nullptr) {
-		label->setPosition(Vec2(visibleSize.width / 2,
-			visibleSize.height - label->getContentSize().height));
-		addChild(label, 1);
-	}
-		auto emitter = ParticleFireworks::create();
-	addChild(emitter, 10);
-
-	*/
-
 	mouseListener = EventListenerMouse::create();
 
 	CreateSprites();
@@ -59,7 +47,7 @@ void SlotMachineScene::CreateSprites() {
 
 	auto menu = Menu::create(closeItem, NULL);
 	menu->setPosition(Vec2::ZERO);
-	addChild(menu, 1);
+	addChild(menu, 15);
 
 	auto spriteMachine = Sprite::create("Art\\SlotMachine.png");
 	if (spriteMachine != nullptr) {
@@ -67,6 +55,23 @@ void SlotMachineScene::CreateSprites() {
 		spriteMachine->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
 		addChild(spriteMachine, 0);
 	}
+
+	winLabel = Label::createWithTTF("You win!", "fonts/Marker Felt.ttf", 90);
+	if (winLabel != nullptr) {
+		winLabel->enableShadow();
+		winLabel->setPosition(spriteMachine->getPosition());
+		winLabel->setOpacity(0);
+		addChild(winLabel, 15);
+	}
+
+	fireworks[0] = ParticleFireworks::create();
+	fireworks[0]->setPosition(winLabel->getPosition() - Vec2(winLabel->getContentSize().width / 2 + 10, 0));
+	addChild(fireworks[0], 16);
+	fireworks[0]->stop();
+	fireworks[1] = ParticleFireworks::create();
+	fireworks[1]->setPosition(winLabel->getPosition() + Vec2(winLabel->getContentSize().width / 2 + 10, 0));
+	addChild(fireworks[1], 16);
+	fireworks[1]->stop();
 
 	spriteMachine = Sprite::create("Art\\SlotMachineForToken.png");
 	if (spriteMachine != nullptr) {
@@ -104,7 +109,6 @@ void SlotMachineScene::CreateSprites() {
 				addChild(slotFrames[i][j], 2);
 			}
 		}
-
 
 		slotSprites[i][0] = Sprite::create("Art\\pw_slot.png");
 		slotSprites[i][1] = Sprite::create("Art\\slot_feather.png");
@@ -200,6 +204,10 @@ void SlotMachineScene::HandleMouseUp(Event *event) {
 		downMouseOnHandle = false;
 
 		if (!animationPlaying) {
+			winLabel->setOpacity(0);
+			fireworks[0]->stop();
+			fireworks[1]->stop();
+
 			animationPlaying = handleIsDown = true;
 			handleUp->setOpacity(0);
 			handleUpActive->setOpacity(0);
@@ -250,18 +258,26 @@ void SlotMachineScene::PlayCoinAnimation() {
 }
 
 void SlotMachineScene::RollSlots() {
+	static int rollCnt = 2;
 	int duration = 2;
 
-	RollSlot(0, duration, random() % 25 + 1);
-	RollSlot(1, duration, random() % 20 + 1);
-	RollSlot(2, duration, random() % 10 + 1);
+	if (rollCnt++ % 2 == 0) {
+		RollSlot(0, duration, random() % 25 + 1);
+		RollSlot(1, duration, random() % 20 + 1);
+		RollSlot(2, duration, random() % 10 + 1);
+	}
+	else {
+		int rand = random() % 10;
+		for (char i = 0; i < 3; ++i)
+			RollSlot(i, duration, 4 - currentSlot[i] + rand);
+	}
 
-	cocos2d::DelayTime* delay = cocos2d::DelayTime::create(duration);
+	cocos2d::DelayTime* delay = cocos2d::DelayTime::create(duration + 0.5);
 	cocos2d::CallFunc* stopAnim = cocos2d::CallFunc::create([this]() {
 		animationPlaying = false;
 	});
 	cocos2d::CallFunc* checkWin = cocos2d::CallFunc::create([this]() {
-		animationPlaying = false;
+		CheckWin();
 	});
 	runAction(cocos2d::Sequence::create(delay, stopAnim, checkWin, nullptr));
 }
@@ -271,6 +287,9 @@ void SlotMachineScene::RollSlot(char slotNum, float duration, char rotates) {
 }
 
 void SlotMachineScene::RollSlotRec(char slotNum, float duration, char rotates) {
+	if (rotates <= 0)
+		return;
+
 	for (char i = 0; i < 5; ++i)
 		slotSprites[slotNum][i]->runAction(MoveBy::create(duration, Vec2(0, -(**slotFrames)->getContentSize().height)));
 
@@ -284,25 +303,33 @@ void SlotMachineScene::RollSlotRec(char slotNum, float duration, char rotates) {
 
 	slotFrames[slotNum][0]->runAction(Sequence::create(move, changeSlotBack, nullptr));
 
-	cocos2d::CallFunc* changeSlotsFigure = cocos2d::CallFunc::create([this, slotNum]() {
+	cocos2d::CallFunc* changeSlotsFigure = cocos2d::CallFunc::create([this, slotNum, duration, rotates]() {
 		char place = currentSlot[slotNum] - 1;
 		if (place == -1)
 			place = 4;
 
-		slotSprites[slotNum][currentSlot[slotNum]]->
-			setPosition(
-				slotSprites[slotNum][place]->getPosition() +
-				Vec2(0, (**slotFrames)->getContentSize().height)
-			);
+		slotSprites[slotNum][currentSlot[slotNum]]->setPosition(
+			slotSprites[slotNum][place]->getPosition() +
+			Vec2(0, (**slotFrames)->getContentSize().height)
+		);
 
 		if (++currentSlot[slotNum] == 5)
 			currentSlot[slotNum] = 0;
+
+		RollSlotRec(slotNum, duration, rotates - 1);
 	});
 
 	cocos2d::CallFunc* nextRoll = cocos2d::CallFunc::create([this, slotNum, duration, rotates]() {
-		if(rotates != 1)
-			RollSlotRec(slotNum, duration, rotates - 1);
+		//RollSlotRec(slotNum, duration, rotates - 1);
 	});
 
-	runAction(Sequence::create(DelayTime::create(duration), changeSlotsFigure, nextRoll,  nullptr));
+	runAction(Sequence::create(DelayTime::create(duration), changeSlotsFigure, nextRoll, nullptr));
+}
+
+void SlotMachineScene::CheckWin() {
+	if (currentSlot[0] == currentSlot[1] && currentSlot[1] == currentSlot[2]) {
+		winLabel->setOpacity(255);
+		fireworks[0]->start();
+		fireworks[1]->start();
+	}
 }

@@ -7,6 +7,8 @@ class SlotMachineScene : public cocos2d::Scene {
 
 	cocos2d::Vec2 slotPos[3], tokenStartPos, tokenInsertStartPos, tokenInsertEndPos;
 	cocos2d::Sprite *slotSprites[3][5], *slotFrames[3][2], *handleUp, *handleUpActive, *handleDown, *token, *insertToken;
+	cocos2d::Label *winLabel;
+	cocos2d::ParticleFireworks *fireworks[2];
 	char currentSlot[3];
 
 	void CreateSprites();
