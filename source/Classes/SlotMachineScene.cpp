@@ -14,6 +14,7 @@ bool SlotMachineScene::init() {
 	if (!Scene::init())
 		return false;
 
+	handleIsDown = animationPlaying = downMouseOnHandle = false;
 	slotPos[0] = Vec2(-303, -11);
 	slotPos[1] = Vec2(-103, -11);
 	slotPos[2] = Vec2(98, -11);
@@ -29,6 +30,8 @@ bool SlotMachineScene::init() {
 	addChild(emitter, 10);
 
 	*/
+
+	mouseListener = EventListenerMouse::create();
 
 	CreateSprites();
 
@@ -117,6 +120,13 @@ void SlotMachineScene::CreateSprites() {
 		}
 	}
 
+	tmpSprite = Sprite::create("Art\\back.png");
+	if (tmpSprite != nullptr) {
+		tmpSprite->setPosition(Vec2::ZERO);
+		tmpSprite->setAnchorPoint(Vec2::ZERO);
+		addChild(tmpSprite, 4);
+	}
+
 	handleUp = Sprite::create("Art\\knob1.png");
 	if (handleUp != nullptr) {
 		handleUp->setPosition(Vec2(spriteMachine->getPositionX() + 420, spriteMachine->getPositionY() + 115));
@@ -126,29 +136,43 @@ void SlotMachineScene::CreateSprites() {
 	handleUpActive = Sprite::create("Art\\KnobGlowHL.png");
 	if (handleUpActive != nullptr) {
 		handleUpActive->setPosition(Vec2(spriteMachine->getPositionX() + 420, spriteMachine->getPositionY() + 115));
+		handleUpActive->setOpacity(0);
 		addChild(handleUpActive, 7);
 	}
 
 	handleDown = Sprite::create("Art\\KnobDown.png");
 	if (handleDown != nullptr) {
-		handleDown->setPosition(Vec2(spriteMachine->getPositionX() + 428, spriteMachine->getPositionY() + 12));
-		handleDown->setContentSize(handleDown->getContentSize() * 1.2);
+		handleDown->setPosition(Vec2(spriteMachine->getPositionX() + 420, spriteMachine->getPositionY() + 12));
+		handleDown->setContentSize(handleDown->getContentSize());
+		handleDown->setOpacity(0);
 		addChild(handleDown, 8);
+	}
+
+	if (handleUpActive != nullptr && handleUp != nullptr && handleDown != nullptr) {
+		auto listener = EventListenerMouse::create();
+		listener->onMouseDown = CC_CALLBACK_1(SlotMachineScene::HandleMouseDown, this);
+		listener->onMouseUp = CC_CALLBACK_1(SlotMachineScene::HandleMouseUp, this);
+		listener->onMouseMove = CC_CALLBACK_1(SlotMachineScene::GlowHandle, this);
+
+		_eventDispatcher->addEventListenerWithFixedPriority(listener, 1);
 	}
 
 	token = Sprite::create("Art\\token.png");
 	if (token != nullptr) {
 		token->setPosition(Vec2(spriteMachine->getPosition()) + Vec2(580, -170));
+		tokenStartPos = token->getPosition();
 		addChild(token, 10);
 	}
 
 	insertToken = Sprite::create("Art\\insertToken.png");
 	if (insertToken != nullptr) {
 		insertToken->setPosition(Vec2(spriteMachine->getPosition()) + Vec2(290, -13));
+		insertToken->setOpacity(0);
+		tokenInsertStartPos = insertToken->getPosition();
+		tokenInsertEndPos = tokenInsertStartPos - Vec2(50, 0);
 		addChild(insertToken, 11);
 	}
 }
-
 
 void SlotMachineScene::MenuCloseCallback(Ref* pSender) {
 	Director::getInstance()->end();
@@ -156,6 +180,66 @@ void SlotMachineScene::MenuCloseCallback(Ref* pSender) {
 
 void SlotMachineScene::GlowHandle(Event *event) {
 	EventMouse* e = (EventMouse*)event;
-	//string str = "MousePosition X:";
-	//str = str + tostr(e->getCursorX()) + " Y:" + tostr(e->getCursorY());
+	if (!handleIsDown && pow(e->getCursorX() - handleUp->getPositionX(), 2) + pow(e->getCursorY() - handleUp->getPositionY(), 2) <= pow(handleUp->getContentSize().height / 2, 2)) {
+		handleUpActive->setOpacity(255);
+	}
+	else {
+		handleUpActive->setOpacity(0);
+	}
+}
+
+void SlotMachineScene::HandleMouseDown(Event *event) {
+	EventMouse* e = (EventMouse*)event;
+	if (pow(e->getCursorX() - handleUp->getPositionX(), 2) + pow(e->getCursorY() - handleUp->getPositionY(), 2) <= pow(handleUp->getContentSize().height / 2, 2))
+		downMouseOnHandle = true;
+}
+void SlotMachineScene::HandleMouseUp(Event *event) {
+	EventMouse* e = (EventMouse*)event;
+	if (downMouseOnHandle && pow(e->getCursorX() - handleUp->getPositionX(), 2) + pow(e->getCursorY() - handleUp->getPositionY(), 2) <= pow(handleUp->getContentSize().height / 2, 2)) {
+		downMouseOnHandle = false;
+		animationPlaying = handleIsDown = true;
+		handleUp->setOpacity(0);
+		handleUpActive->setOpacity(0);
+		handleDown->setOpacity(255);
+
+		PlayCoinAnimation();
+	}
+
+}
+
+void SlotMachineScene::PlayCoinAnimation() {
+	token->runAction(Sequence::create(
+		Spawn::create(
+			MoveTo::create(2, tokenInsertStartPos - Vec2(5, 0)),
+			Sequence::create(
+				DelayTime::create(1),
+				CallFunc::create([this]() {
+					handleUp->setOpacity(255);
+					handleDown->setOpacity(0);
+				}),
+				nullptr
+			),
+			nullptr
+		),
+
+		CallFunc::create([this]() {
+			token->setOpacity(0);
+			insertToken->setOpacity(255);
+
+			insertToken->runAction(Sequence::create(
+				MoveTo::create(2, tokenInsertEndPos),
+				FadeOut::create(2),
+				CallFunc::create([this]() {
+				RollSlots();
+			}),
+			nullptr
+			));
+		}),
+
+		nullptr
+	));
+}
+
+void SlotMachineScene::RollSlots() {
+	char rotates[3] = { random() % 16 + 5, random() % 14 + 2, random() % 10 + 1 };
 }
