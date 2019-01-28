@@ -57,39 +57,39 @@ $RECYCLE.BIN/
 
 # proj.android
 bin/
-proj.android/assets/
-proj.android/bin/
-proj.android/gen/
-proj.android/libs/
-proj.android/local.properties
-proj.android/obj/
-cocos2d/cocos/platform/android/java/bin/
-cocos2d/cocos/platform/android/java/gen/
-cocos2d/cocos/platform/android/java/local.properties
-cocos2d/cocos/platform/android/java/res/
+source/proj.android/assets/
+source/proj.android/bin/
+source/proj.android/gen/
+source/proj.android/libs/
+source/proj.android/local.properties
+source/proj.android/obj/
+source/cocos2d/cocos/platform/android/java/bin/
+source/cocos2d/cocos/platform/android/java/gen/
+source/cocos2d/cocos/platform/android/java/local.properties
+source/cocos2d/cocos/platform/android/java/res/
 .metadata/
 .recommenders/
 
 # proj.android-studio
 .idea/
 *.iml
-proj.android-studio/app/assets/
-proj.android-studio/app/obj/
-proj.android-studio/app/libs/armeabi/
-proj.android-studio/app/libs/armeabi-v7a/
-proj.android-studio/app/libs/x86/
-proj.android-studio/app/gradle.properties
-proj.android-studio/app/local.properties
-proj.android-studio/*/build/
-cocos2d/cocos/platform/android/libcocos2dx/build/
-cocos2d/cocos/platform/android/java/libs/gps/build/
+source/proj.android-studio/app/assets/
+source/proj.android-studio/app/obj/
+source/proj.android-studio/app/libs/armeabi/
+source/proj.android-studio/app/libs/armeabi-v7a/
+source/proj.android-studio/app/libs/x86/
+source/proj.android-studio/app/gradle.properties
+source/proj.android-studio/app/local.properties
+source/proj.android-studio/*/build/
+source/cocos2d/cocos/platform/android/libcocos2dx/build/
+source/cocos2d/cocos/platform/android/java/libs/gps/build/
 
 # proj.ios_mac
-cocos2d/build/build/
-cocos2d/build/cocos2d_libs.xcodeproj/xcuserdata/
-proj.ios_mac/build/
-proj.ios_mac/*.xcodeproj/project.xcworkspace
-proj.ios_mac/*.xcodeproj/xcuserdata/
+source/cocos2d/build/build/
+source/cocos2d/build/cocos2d_libs.xcodeproj/xcuserdata/
+source/proj.ios_mac/build/
+source/proj.ios_mac/*.xcodeproj/project.xcworkspace
+source/proj.ios_mac/*.xcodeproj/xcuserdata/
 !*.pch
 
 # proj.linux
@@ -98,17 +98,17 @@ proj.ios_mac/*.xcodeproj/xcuserdata/
 *.suo
 .vs/
 .vscode/
-cocos2d/cocos/2d/Debug.*/
-cocos2d/cocos/editor-support/spine/proj.win32/Debug.*/
-cocos2d/external/Box2D/proj.win32/Debug.*/
-cocos2d/external/recast/proj.win32/Debug.*/
-cocos2d/cocos/2d/Release.*/
-cocos2d/cocos/editor-support/spine/proj.win32/Release.*/
-cocos2d/external/Box2D/proj.win32/Release.*/
-cocos2d/external/recast/proj.win32/Release.*/
-proj.win32/*.sdf
-proj.win32/*.opensdf
-proj.win32/Debug.*/
-proj.win32/Release.*/
+source/cocos2d/cocos/2d/Debug.*/
+source/cocos2d/cocos/editor-support/spine/proj.win32/Debug.*/
+source/cocos2d/external/Box2D/proj.win32/Debug.*/
+source/cocos2d/external/recast/proj.win32/Debug.*/
+source/cocos2d/cocos/2d/Release.*/
+source/cocos2d/cocos/editor-support/spine/proj.win32/Release.*/
+source/cocos2d/external/Box2D/proj.win32/Release.*/
+source/cocos2d/external/recast/proj.win32/Release.*/
+source/proj.win32/*.sdf
+source/proj.win32/*.opensdf
+source/proj.win32/Debug.*/
+source/proj.win32/Release.*/
 
 # others
