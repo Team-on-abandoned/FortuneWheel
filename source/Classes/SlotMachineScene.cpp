@@ -1,16 +1,16 @@
 #include <iostream>
-#include "HelloWorldScene.h"
+#include "SlotMachineScene.h"
 #include "SimpleAudioEngine.h"
 
 USING_NS_CC;
 using std::cout;
 using std::endl;
 
-Scene* HelloWorld::createScene() {
-	return HelloWorld::create();
+Scene* SlotMachineScene::createScene() {
+	return SlotMachineScene::create();
 }
 
-bool HelloWorld::init() {
+bool SlotMachineScene::init() {
 	if (!Scene::init())
 		return false;
 
@@ -36,13 +36,13 @@ bool HelloWorld::init() {
 	return true;
 }
 
-void HelloWorld::CreateSprites() {
+void SlotMachineScene::CreateSprites() {
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 
 	auto closeItem = MenuItemImage::create(
 		"CloseNormal.png",
 		"CloseSelected.png",
-		CC_CALLBACK_1(HelloWorld::menuCloseCallback, this));
+		CC_CALLBACK_1(SlotMachineScene::MenuCloseCallback, this));
 
 	if (closeItem != nullptr &&
 		closeItem->getContentSize().width > 0 &&
@@ -150,6 +150,12 @@ void HelloWorld::CreateSprites() {
 }
 
 
-void HelloWorld::menuCloseCallback(Ref* pSender) {
+void SlotMachineScene::MenuCloseCallback(Ref* pSender) {
 	Director::getInstance()->end();
+}
+
+void SlotMachineScene::GlowHandle(Event *event) {
+	EventMouse* e = (EventMouse*)event;
+	//string str = "MousePosition X:";
+	//str = str + tostr(e->getCursorX()) + " Y:" + tostr(e->getCursorY());
 }

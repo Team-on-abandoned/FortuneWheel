@@ -1,7 +1,7 @@
 #pragma once
 #include "cocos2d.h"
 
-class HelloWorld : public cocos2d::Scene {
+class SlotMachineScene : public cocos2d::Scene {
 	cocos2d::Vec2 slotPos[3];
 	cocos2d::Sprite *slotSprites[3][5], *slotFrames[3][2], *handleUp, *handleUpActive, *handleDown, *token, *insertToken;
 
@@ -11,6 +11,8 @@ public:
 
 	virtual bool init();
 
-	void menuCloseCallback(cocos2d::Ref* pSender);
-	CREATE_FUNC(HelloWorld);
+	void MenuCloseCallback(cocos2d::Ref* pSender);
+	void GlowHandle(cocos2d::Event *event);
+
+	CREATE_FUNC(SlotMachineScene);
 };
