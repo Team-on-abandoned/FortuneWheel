@@ -18,6 +18,7 @@ bool SlotMachineScene::init() {
 	slotPos[0] = Vec2(-303, -11);
 	slotPos[1] = Vec2(-103, -11);
 	slotPos[2] = Vec2(98, -11);
+	currentSlot[0] = currentSlot[1] = currentSlot[2] = 0;
 
 	/*
 	auto label = Label::createWithTTF("You win!", "fonts/Marker Felt.ttf", 24);
@@ -34,7 +35,6 @@ bool SlotMachineScene::init() {
 	mouseListener = EventListenerMouse::create();
 
 	CreateSprites();
-
 
 	return true;
 }
@@ -193,16 +193,20 @@ void SlotMachineScene::HandleMouseDown(Event *event) {
 	if (pow(e->getCursorX() - handleUp->getPositionX(), 2) + pow(e->getCursorY() - handleUp->getPositionY(), 2) <= pow(handleUp->getContentSize().height / 2, 2))
 		downMouseOnHandle = true;
 }
+
 void SlotMachineScene::HandleMouseUp(Event *event) {
 	EventMouse* e = (EventMouse*)event;
 	if (downMouseOnHandle && pow(e->getCursorX() - handleUp->getPositionX(), 2) + pow(e->getCursorY() - handleUp->getPositionY(), 2) <= pow(handleUp->getContentSize().height / 2, 2)) {
 		downMouseOnHandle = false;
-		animationPlaying = handleIsDown = true;
-		handleUp->setOpacity(0);
-		handleUpActive->setOpacity(0);
-		handleDown->setOpacity(255);
 
-		PlayCoinAnimation();
+		if (!animationPlaying) {
+			animationPlaying = handleIsDown = true;
+			handleUp->setOpacity(0);
+			handleUpActive->setOpacity(0);
+			handleDown->setOpacity(255);
+
+			PlayCoinAnimation();
+		}
 	}
 
 }
@@ -214,32 +218,91 @@ void SlotMachineScene::PlayCoinAnimation() {
 			Sequence::create(
 				DelayTime::create(1),
 				CallFunc::create([this]() {
-					handleUp->setOpacity(255);
-					handleDown->setOpacity(0);
-				}),
+		handleUp->setOpacity(255);
+		handleDown->setOpacity(0);
+		handleIsDown = false;
+	}),
 				nullptr
-			),
+		),
 			nullptr
 		),
 
 		CallFunc::create([this]() {
-			token->setOpacity(0);
-			insertToken->setOpacity(255);
+		token->setPosition(tokenStartPos);
+		insertToken->setPosition(tokenInsertStartPos);
+		insertToken->setOpacity(255);
 
-			insertToken->runAction(Sequence::create(
-				MoveTo::create(2, tokenInsertEndPos),
+		insertToken->runAction(Sequence::create(
+			MoveTo::create(2, tokenInsertEndPos),
+			Spawn::create(
 				FadeOut::create(2),
 				CallFunc::create([this]() {
-				RollSlots();
-			}),
+			RollSlots();
+		}),
+				nullptr
+			),
 			nullptr
 			));
-		}),
+	}),
 
 		nullptr
-	));
+		));
 }
 
 void SlotMachineScene::RollSlots() {
-	char rotates[3] = { random() % 16 + 5, random() % 14 + 2, random() % 10 + 1 };
+	int duration = 2;
+
+	RollSlot(0, duration, random() % 25 + 1);
+	RollSlot(1, duration, random() % 20 + 1);
+	RollSlot(2, duration, random() % 10 + 1);
+
+	cocos2d::DelayTime* delay = cocos2d::DelayTime::create(duration);
+	cocos2d::CallFunc* stopAnim = cocos2d::CallFunc::create([this]() {
+		animationPlaying = false;
+	});
+	cocos2d::CallFunc* checkWin = cocos2d::CallFunc::create([this]() {
+		animationPlaying = false;
+	});
+	runAction(cocos2d::Sequence::create(delay, stopAnim, checkWin, nullptr));
+}
+
+void SlotMachineScene::RollSlot(char slotNum, float duration, char rotates) {
+	RollSlotRec(slotNum, duration / rotates, rotates);
+}
+
+void SlotMachineScene::RollSlotRec(char slotNum, float duration, char rotates) {
+	for (char i = 0; i < 5; ++i)
+		slotSprites[slotNum][i]->runAction(MoveBy::create(duration, Vec2(0, -(**slotFrames)->getContentSize().height)));
+
+	auto move = MoveBy::create(duration, Vec2(0, -(**slotFrames)->getContentSize().height));
+	auto changeSlotBack = CallFunc::create([this, slotNum]() {
+		auto tmp = slotFrames[slotNum][0]->getPosition();
+		slotFrames[slotNum][0]->setPosition(slotFrames[slotNum][1]->getPosition());
+		slotFrames[slotNum][1]->setPosition(slotFrames[slotNum][0]->getPosition());
+
+	});
+
+	slotFrames[slotNum][0]->runAction(Sequence::create(move, changeSlotBack, nullptr));
+
+	cocos2d::CallFunc* changeSlotsFigure = cocos2d::CallFunc::create([this, slotNum]() {
+		char place = currentSlot[slotNum] - 1;
+		if (place == -1)
+			place = 4;
+
+		slotSprites[slotNum][currentSlot[slotNum]]->
+			setPosition(
+				slotSprites[slotNum][place]->getPosition() +
+				Vec2(0, (**slotFrames)->getContentSize().height)
+			);
+
+		if (++currentSlot[slotNum] == 5)
+			currentSlot[slotNum] = 0;
+	});
+
+	cocos2d::CallFunc* nextRoll = cocos2d::CallFunc::create([this, slotNum, duration, rotates]() {
+		if(rotates != 1)
+			RollSlotRec(slotNum, duration, rotates - 1);
+	});
+
+	runAction(Sequence::create(DelayTime::create(duration), changeSlotsFigure, nextRoll,  nullptr));
 }

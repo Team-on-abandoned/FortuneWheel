@@ -7,9 +7,11 @@ class SlotMachineScene : public cocos2d::Scene {
 
 	cocos2d::Vec2 slotPos[3], tokenStartPos, tokenInsertStartPos, tokenInsertEndPos;
 	cocos2d::Sprite *slotSprites[3][5], *slotFrames[3][2], *handleUp, *handleUpActive, *handleDown, *token, *insertToken;
+	char currentSlot[3];
 
 	void CreateSprites();
 	void PlayCoinAnimation();
+	void RollSlotRec(char slotNum, float duration, char rotates);
 public:
 	static cocos2d::Scene* createScene();
 
@@ -23,4 +25,7 @@ public:
 	void HandleMouseUp(cocos2d::Event *event);
 
 	void RollSlots();
+	void RollSlot(char slotNum, float duration, char rotates);
+
+	void CheckWin();
 };
