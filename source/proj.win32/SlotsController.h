@@ -9,27 +9,29 @@ public:
 	~SlotsController();
 
 	//Загружає спрайти всіх для слотів
-	void AddSprite(cocos2d::Sprite sprite);
+	void AddSprite(cocos2d::Sprite *sprite);
 	//Створює слот на позиції slotPos. Викликатии лише після всіх викликів AddSprite().
-	void AddSlot(cocos2d::Vec2 slotPos);
+	void AddSlot(cocos2d::Scene *scene, cocos2d::Vec2 slotPos);
 
 	//Робить кожний 2 виклик Roll() виграшним
-	void EnableDebugMode();
-	void DisableDebugMode();
+	void EnableDebugMode(){ isInDebugMode = true; }
+	void DisableDebugMode(){ isInDebugMode = false; }
 
 	void Roll();
 
 	bool IsWin();
 
+	void SetDurationForRoll(float _durationForRoll) { durationForRoll = _durationForRoll; }
+	void SetMaxRotates(float _maxRotates){ maxRotates = _maxRotates;}
+
 private:
+	cocos2d::Scene *scene;
 	std::vector<cocos2d::Sprite*> sprites;
 	std::vector<Slot> slots;
 
+	int rollCnt;
 	float durationForRoll;
 	char  maxRotates;
 
 	bool isInDebugMode;
-
-	void RollSlot(char slotNum, float duration, char rotates);
-	void RollSlotRec(char slotNum, float durationForRotate, char rotates);
 };

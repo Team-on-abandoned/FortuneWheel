@@ -26,6 +26,4 @@ public:
 
 	void RollSlots();
 	void RollSlot(char slotNum, float duration, char rotates);
-
-	void CheckWin();
 };

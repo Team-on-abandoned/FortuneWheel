@@ -5,6 +5,9 @@ USING_NS_CC;
 
 
 SlotMachineController::SlotMachineController() {
+	slotsController.SetDurationForRoll(2);
+	slotsController.SetMaxRotates(25);
+	slotsController.EnableDebugMode();
 }
 
 
@@ -14,8 +17,19 @@ SlotMachineController::~SlotMachineController() {
 void SlotMachineController::StartGame(cocos2d::Scene *scene) {
 	this->scene = scene;
 
-
 	CreateStaticSprites();
+
+	slotsController.AddSprite(Sprite::create("Art\\pw_slot.png"));
+	slotsController.AddSprite(Sprite::create("Art\\slot_feather.png"));
+	slotsController.AddSprite(Sprite::create("Art\\slot_gold.png"));
+	slotsController.AddSprite(Sprite::create("Art\\slot_seven.png"));
+	slotsController.AddSprite(Sprite::create("Art\\slot_tickets.png"));
+
+	slotsController.AddSlot(scene, GetPosRelativeToCenter(-303, -11));
+	slotsController.AddSlot(scene, GetPosRelativeToCenter(-103, -11));
+	slotsController.AddSlot(scene, GetPosRelativeToCenter(98, -11));
+
+	winEffects.Init(scene, center);
 }
 
 void SlotMachineController::CreateStaticSprites() {
@@ -74,39 +88,6 @@ void SlotMachineController::CreateStaticSprites() {
 		scene->addChild(tmpSprite, Settings::z_sprite_Background);
 	}
 
-	winEffects.Init(scene, center);
-
-	/*for (char i = 0; i < 3; ++i) {
-		tmpSprite = Sprite::create("Art\\SlotBG.png");
-		if (tmpSprite != nullptr) {
-			tmpSprite->setPosition(spriteMachine->getPosition() + slotPos[i]);
-			scene->addChild(tmpSprite, 1);
-		}
-
-		slotFrames[i][0] = Sprite::create("Art\\Frame.png");
-		slotFrames[i][1] = Sprite::create("Art\\Frame.png");
-		for (char j = 0; j < 2; ++j) {
-			if (slotFrames[i][j] != nullptr) {
-				slotFrames[i][j]->setPosition(spriteMachine->getPosition() + slotPos[i]);
-				slotFrames[i][j]->setPositionY(slotFrames[i][j]->getPositionY() + j * tmpSprite->getContentSize().height);
-				scene->addChild(slotFrames[i][j], 2);
-			}
-		}
-
-		slotSprites[i][0] = Sprite::create("Art\\pw_slot.png");
-		slotSprites[i][1] = Sprite::create("Art\\slot_feather.png");
-		slotSprites[i][2] = Sprite::create("Art\\slot_gold.png");
-		slotSprites[i][3] = Sprite::create("Art\\slot_seven.png");
-		slotSprites[i][4] = Sprite::create("Art\\slot_tickets.png");
-		for (char j = 0; j < 5; ++j) {
-			if (slotSprites[i][j] != nullptr) {
-				slotSprites[i][j]->setPosition(spriteMachine->getPosition() + slotPos[i]);
-				slotSprites[i][j]->setPositionY(slotSprites[i][j]->getPositionY() + j * tmpSprite->getContentSize().height);
-				scene->addChild(slotSprites[i][j], 3);
-			}
-		}
-	}*/
-
 	/*handleUp = Sprite::create("Art\\knob1.png");
 	if (handleUp != nullptr) {
 		handleUp->setPosition(Vec2(spriteMachine->getPositionX() + 420, spriteMachine->getPositionY() + 115));
@@ -159,5 +140,6 @@ Vec2 SlotMachineController::GetPosRelativeToCenter(int x, int y) {
 }
 
 void SlotMachineController::MenuCloseCallback(Ref* pSender) {
-	Director::getInstance()->end();
+	//Director::getInstance()->end();
+	slotsController.Roll();
 }

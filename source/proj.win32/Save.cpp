@@ -14,10 +14,6 @@ bool Save::init() {
 		return false;
 
 	handleIsDown = animationPlaying = downMouseOnHandle = false;
-	slotPos[0] = Vec2(-303, -11);
-	slotPos[1] = Vec2(-103, -11);
-	slotPos[2] = Vec2(98, -11);
-	currentSlot[0] = currentSlot[1] = currentSlot[2] = 0;
 
 	mouseListener = EventListenerMouse::create();
 
@@ -120,7 +116,7 @@ void Save::RollSlots() {
 		animationPlaying = false;
 	});
 	cocos2d::CallFunc* checkWin = cocos2d::CallFunc::create([this]() {
-		CheckWin();
+		//CheckWin();
 	});
 	runAction(cocos2d::Sequence::create(delay, stopAnim, checkWin, nullptr));
 }
@@ -169,10 +165,3 @@ void Save::RollSlotRec(char slotNum, float duration, char rotates) {
 	runAction(Sequence::create(DelayTime::create(duration), changeSlotsFigure, nextRoll, nullptr));
 }
 
-void Save::CheckWin() {
-	if (currentSlot[0] == currentSlot[1] && currentSlot[1] == currentSlot[2]) {
-		winLabel->setOpacity(255);
-		fireworks[0]->start();
-		fireworks[1]->start();
-	}
-}
