@@ -11,7 +11,6 @@ class Save : public cocos2d::Scene {
 	cocos2d::ParticleFireworks *fireworks[2];
 	char currentSlot[3];
 
-	void CreateSprites();
 	void PlayCoinAnimation();
 	void RollSlotRec(char slotNum, float duration, char rotates);
 public:
@@ -20,7 +19,6 @@ public:
 	CREATE_FUNC(Save);
 	virtual bool init();
 
-	void MenuCloseCallback(cocos2d::Ref* pSender);
 
 	void GlowHandle(cocos2d::Event *event);
 	void HandleMouseDown(cocos2d::Event *event);

@@ -14,6 +14,7 @@ SlotMachineController::~SlotMachineController() {
 void SlotMachineController::StartGame(cocos2d::Scene *scene) {
 	this->scene = scene;
 
+
 	CreateStaticSprites();
 }
 
@@ -45,28 +46,11 @@ void SlotMachineController::CreateStaticSprites() {
 		scene->addChild(tmpSprite, Settings::z_sprite_slotMachine);
 	}
 
-	/*winLabel = Label::createWithTTF("You win!", "fonts/Marker Felt.ttf", 90);
-	if (winLabel != nullptr) {
-		winLabel->enableShadow();
-		winLabel->setPosition(spriteMachine->getPosition());
-		winLabel->setOpacity(0);
-		scene->addChild(winLabel, 15);
-	}
-
-	fireworks[0] = ParticleFireworks::create();
-	fireworks[0]->setPosition(winLabel->getPosition() - Vec2(winLabel->getContentSize().width / 2 + 10, 0));
-	scene->addChild(fireworks[0], 16);
-	fireworks[0]->stop();
-	fireworks[1] = ParticleFireworks::create();
-	fireworks[1]->setPosition(winLabel->getPosition() + Vec2(winLabel->getContentSize().width / 2 + 10, 0));
-	scene->addChild(fireworks[1], 16);
-	fireworks[1]->stop();*/
-
 	tmpSprite = Sprite::create("Art\\SlotMachineForToken.png");
 	if (tmpSprite != nullptr) {
 		tmpSprite->setAnchorPoint(Vec2(0.5, 0.5));
 		tmpSprite->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
-		scene->addChild(tmpSprite, Settings::z_sprite_slotMachine);
+		scene->addChild(tmpSprite, Settings::z_sprite_slotMachineForToken);
 	}
 
 	tmpSprite = Sprite::create("Art\\SlotMachineEmpty.png");
@@ -81,6 +65,16 @@ void SlotMachineController::CreateStaticSprites() {
 		tmpSprite->setPosition(GetPosRelativeToCenter(-403, -11));
 		scene->addChild(tmpSprite, Settings::z_sprite_arrow);
 	}
+
+
+	tmpSprite = Sprite::create("Art\\back.png");
+	if (tmpSprite != nullptr) {
+		tmpSprite->setPosition(Vec2::ZERO);
+		tmpSprite->setAnchorPoint(Vec2::ZERO);
+		scene->addChild(tmpSprite, Settings::z_sprite_Background);
+	}
+
+	winEffects.Init(scene, center);
 
 	/*for (char i = 0; i < 3; ++i) {
 		tmpSprite = Sprite::create("Art\\SlotBG.png");
@@ -112,13 +106,6 @@ void SlotMachineController::CreateStaticSprites() {
 			}
 		}
 	}*/
-
-	tmpSprite = Sprite::create("Art\\back.png");
-	if (tmpSprite != nullptr) {
-		tmpSprite->setPosition(Vec2::ZERO);
-		tmpSprite->setAnchorPoint(Vec2::ZERO);
-		scene->addChild(tmpSprite, 4);
-	}
 
 	/*handleUp = Sprite::create("Art\\knob1.png");
 	if (handleUp != nullptr) {

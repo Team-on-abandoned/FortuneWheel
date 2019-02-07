@@ -3,8 +3,7 @@
 
 class WinEffects {
 public:
-	WinEffects();
-	~WinEffects();
+	void Init(cocos2d::Scene *scene, cocos2d::Vec2 pos);
 
 	void Enable();
 	void Disable();
