@@ -152,11 +152,25 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
     <ClCompile Include="..\Classes\SlotMachineScene.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Save.cpp" />
+    <ClCompile Include="Slot.cpp" />
+    <ClCompile Include="SlotMachineController.cpp" />
+    <ClCompile Include="SlotMachineHandle.cpp" />
+    <ClCompile Include="SlotsController.cpp" />
+    <ClCompile Include="TokenInfo.cpp" />
+    <ClCompile Include="WinEffects.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Classes\AppDelegate.h" />
     <ClInclude Include="..\Classes\SlotMachineScene.h" />
     <ClInclude Include="main.h" />
+    <ClInclude Include="Save.h" />
+    <ClInclude Include="Slot.h" />
+    <ClInclude Include="SlotMachineController.h" />
+    <ClInclude Include="SlotMachineHandle.h" />
+    <ClInclude Include="SlotsController.h" />
+    <ClInclude Include="TokenInfo.h" />
+    <ClInclude Include="WinEffects.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\cocos2d\cocos\2d\libcocos2d.vcxproj">
