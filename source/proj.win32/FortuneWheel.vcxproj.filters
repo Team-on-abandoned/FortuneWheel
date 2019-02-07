@@ -80,6 +80,7 @@
     <ClInclude Include="Save.h">
       <Filter>scenes\tmpSave</Filter>
     </ClInclude>
+    <ClInclude Include="Settings.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc">

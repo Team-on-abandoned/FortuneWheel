@@ -11,7 +11,7 @@ bool SlotMachineScene::init() {
 	if (!Scene::init())
 		return false;
 
-	slotMachineController.StartGame();
+	slotMachineController.StartGame(this);
 
 	return true;
 }
