@@ -30,6 +30,12 @@ void SlotMachineController::StartGame(cocos2d::Scene *scene) {
 	slotsController.AddSlot(scene, GetPosRelativeToCenter(98, -11));
 
 	winEffects.Init(scene, center);
+	tokenInfo.Init(scene, 
+		GetPosRelativeToCenter(580, -170), 
+		GetPosRelativeToCenter(285, -13),
+		GetPosRelativeToCenter(290, -13),
+		GetPosRelativeToCenter(240, -13)
+	);
 }
 
 void SlotMachineController::CreateStaticSprites() {
@@ -117,22 +123,7 @@ void SlotMachineController::CreateStaticSprites() {
 
 		_eventDispatcher->addEventListenerWithFixedPriority(listener, 1);
 	}
-
-	token = Sprite::create("Art\\token.png");
-	if (token != nullptr) {
-		token->setPosition(Vec2(spriteMachine->getPosition()) + Vec2(580, -170));
-		tokenStartPos = token->getPosition();
-		scene->addChild(token, 10);
-	}
-
-	insertToken = Sprite::create("Art\\insertToken.png");
-	if (insertToken != nullptr) {
-		insertToken->setPosition(Vec2(spriteMachine->getPosition()) + Vec2(290, -13));
-		insertToken->setOpacity(0);
-		tokenInsertStartPos = insertToken->getPosition();
-		tokenInsertEndPos = tokenInsertStartPos - Vec2(50, 0);
-		scene->addChild(insertToken, 11);
-	}*/
+	*/
 }
 
 Vec2 SlotMachineController::GetPosRelativeToCenter(int x, int y) {
@@ -149,5 +140,6 @@ void SlotMachineController::MenuCloseCallback(Ref* pSender) {
 			winEffects.Disable();
 
 		slotsController.Roll();
+		tokenInfo.PlayAnimation();
 	}
 }

@@ -3,10 +3,7 @@
 
 class TokenInfo {
 public:
-	TokenInfo();
-	~TokenInfo();
-
-	void SetTokenPos(cocos2d::Vec2 tokenStartPos, cocos2d::Vec2 tokenEndPos, cocos2d::Vec2 tokenInsertStartPos, cocos2d::Vec2 tokenInsertEndPos);
+	void Init(cocos2d::Scene *scene, cocos2d::Vec2 tokenStartPos, cocos2d::Vec2 tokenEndPos, cocos2d::Vec2 tokenInsertStartPos, cocos2d::Vec2 tokenInsertEndPos);
 
 	void PlayAnimation();
 

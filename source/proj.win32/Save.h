@@ -11,7 +11,6 @@ class Save : public cocos2d::Scene {
 	cocos2d::ParticleFireworks *fireworks[2];
 	char currentSlot[3];
 
-	void PlayCoinAnimation();
 public:
 	static cocos2d::Scene* createScene();
 

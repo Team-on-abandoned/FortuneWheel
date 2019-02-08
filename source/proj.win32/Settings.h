@@ -12,6 +12,8 @@ public:
 	static const int z_sprite_slotFrame = 2;
 	static const int z_sprite_slotSprite = 3;
 
+	static const int z_sprite_token = 10;
+	static const int z_sprite_insertToken = 11;
 
 	static const int z_label_win = 15;
 	static const int z_particle_fireworks = 16;

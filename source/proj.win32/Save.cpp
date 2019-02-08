@@ -52,46 +52,8 @@ void Save::HandleMouseUp(Event *event) {
 			handleUpActive->setOpacity(0);
 			handleDown->setOpacity(255);
 
-			PlayCoinAnimation();
+			//PlayCoinAnimation();
 		}
 	}
 
-}
-
-void Save::PlayCoinAnimation() {
-	token->runAction(Sequence::create(
-		Spawn::create(
-			MoveTo::create(2, tokenInsertStartPos - Vec2(5, 0)),
-			Sequence::create(
-				DelayTime::create(1),
-				CallFunc::create([this]() {
-		handleUp->setOpacity(255);
-		handleDown->setOpacity(0);
-		handleIsDown = false;
-	}),
-				nullptr
-		),
-			nullptr
-		),
-
-		CallFunc::create([this]() {
-		token->setPosition(tokenStartPos);
-		insertToken->setPosition(tokenInsertStartPos);
-		insertToken->setOpacity(255);
-
-		insertToken->runAction(Sequence::create(
-			MoveTo::create(2, tokenInsertEndPos),
-			Spawn::create(
-				FadeOut::create(2),
-				CallFunc::create([this]() {
-			//RollSlots();
-		}),
-				nullptr
-			),
-			nullptr
-			));
-	}),
-
-		nullptr
-		));
 }
