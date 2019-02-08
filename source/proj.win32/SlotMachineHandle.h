@@ -6,13 +6,13 @@ public:
 	SlotMachineHandle();
 	~SlotMachineHandle();
 
-	void (*OnHandleDown)();
+	void Init(cocos2d::Scene *scene, cocos2d::Vec2 handlePos, cocos2d::Vec2 handleDownPos);
 
 private:
 	cocos2d::EventListenerMouse* mouseListener;
 
 	cocos2d::Sprite *handleUp, *handleUpActive, *handleDown;
-	bool downMouseOnHandle, handleIsDown;
+	bool downMouseOnHandle, isHandleDown;
 
 	void GlowHandle(cocos2d::Event *event);
 	void HandleMouseDown(cocos2d::Event *event);

@@ -30,12 +30,15 @@ void SlotMachineController::StartGame(cocos2d::Scene *scene) {
 	slotsController.AddSlot(scene, GetPosRelativeToCenter(98, -11));
 
 	winEffects.Init(scene, center);
+	
 	tokenInfo.Init(scene, 
 		GetPosRelativeToCenter(580, -170), 
 		GetPosRelativeToCenter(285, -13),
 		GetPosRelativeToCenter(290, -13),
 		GetPosRelativeToCenter(240, -13)
 	);
+
+	slotMachineHandle.Init(scene, GetPosRelativeToCenter(420, 115), GetPosRelativeToCenter(420, 12));
 }
 
 void SlotMachineController::CreateStaticSprites() {
@@ -93,37 +96,6 @@ void SlotMachineController::CreateStaticSprites() {
 		tmpSprite->setAnchorPoint(Vec2::ZERO);
 		scene->addChild(tmpSprite, Settings::z_sprite_Background);
 	}
-
-	/*handleUp = Sprite::create("Art\\knob1.png");
-	if (handleUp != nullptr) {
-		handleUp->setPosition(Vec2(spriteMachine->getPositionX() + 420, spriteMachine->getPositionY() + 115));
-		scene->addChild(handleUp, 6);
-	}
-
-	handleUpActive = Sprite::create("Art\\KnobGlowHL.png");
-	if (handleUpActive != nullptr) {
-		handleUpActive->setPosition(Vec2(spriteMachine->getPositionX() + 420, spriteMachine->getPositionY() + 115));
-		handleUpActive->setOpacity(0);
-		scene->addChild(handleUpActive, 7);
-	}
-
-	handleDown = Sprite::create("Art\\KnobDown.png");
-	if (handleDown != nullptr) {
-		handleDown->setPosition(Vec2(spriteMachine->getPositionX() + 420, spriteMachine->getPositionY() + 12));
-		handleDown->setContentSize(handleDown->getContentSize());
-		handleDown->setOpacity(0);
-		scene->addChild(handleDown, 8);
-	}
-
-	if (handleUpActive != nullptr && handleUp != nullptr && handleDown != nullptr) {
-		auto listener = EventListenerMouse::create();
-		listener->onMouseDown = CC_CALLBACK_1(Save::HandleMouseDown, this);
-		listener->onMouseUp = CC_CALLBACK_1(Save::HandleMouseUp, this);
-		listener->onMouseMove = CC_CALLBACK_1(Save::GlowHandle, this);
-
-		_eventDispatcher->addEventListenerWithFixedPriority(listener, 1);
-	}
-	*/
 }
 
 Vec2 SlotMachineController::GetPosRelativeToCenter(int x, int y) {
