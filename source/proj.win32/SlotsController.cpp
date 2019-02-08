@@ -36,7 +36,7 @@ void SlotsController::Roll() {
 	if (isInDebugMode && rollCnt % 2 == 0) {
 		int rand = random() % maxRotates;
 		for (char i = 0; i < slots.size(); ++i)
-			slots[i].Roll(durationForRoll, sprites.size() - 1 - slots[i].GetCurrentSprite() + rand);
+			slots[i].Roll(durationForRoll, sprites.size() - 1 - slots[i].GetCurrentSpriteNum() + rand);
 	}
 	else {
 		for (char i = 0; i < slots.size(); ++i)
@@ -55,10 +55,10 @@ void SlotsController::Roll() {
 }
 
 bool SlotsController::IsWin() {
-	char first = slots[0].GetCurrentSprite();
+	char first = slots[0].GetCurrentSpriteNum();
 
 	for(char i = 1; i < slots.size(); ++i)
-		if(slots[i].GetCurrentSprite() != first)
+		if(slots[i].GetCurrentSpriteNum() != first)
 			return false;
 
 	return true;

@@ -6,7 +6,7 @@ public:
 	Slot(cocos2d::Scene *scene, cocos2d::Vec2 slotPos, std::vector<cocos2d::Sprite*> sprites);
 	~Slot();
 
-	char GetCurrentSprite() { return currentSprite; }
+	char GetCurrentSpriteNum() { return currentSprite; }
 	void Roll(float durationForAll, char rotates);
 
 private:

@@ -31,7 +31,6 @@ void TokenInfo::PlayAnimation() {
 			insertToken->setPosition(tokenInsertStartPos);
 			insertToken->setOpacity(255);
 
-
 			insertToken->runAction(Sequence::create(
 				MoveTo::create(2, tokenInsertEndPos),
 				Spawn::create(
@@ -46,5 +45,5 @@ void TokenInfo::PlayAnimation() {
 		}),
 
 		nullptr
-		));
+	));
 }

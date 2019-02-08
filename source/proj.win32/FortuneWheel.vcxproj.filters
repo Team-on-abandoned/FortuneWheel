@@ -13,9 +13,6 @@
     <Filter Include="scenes">
       <UniqueIdentifier>{bb6c862e-70e9-49d9-81b7-3829a6f50471}</UniqueIdentifier>
     </Filter>
-    <Filter Include="scenes\tmpSave">
-      <UniqueIdentifier>{fb0044a8-e45e-4276-a956-017526532767}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -45,9 +42,6 @@
     <ClCompile Include="SlotMachineHandle.cpp">
       <Filter>game</Filter>
     </ClCompile>
-    <ClCompile Include="Save.cpp">
-      <Filter>scenes\tmpSave</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -76,9 +70,6 @@
     </ClInclude>
     <ClInclude Include="SlotMachineHandle.h">
       <Filter>game</Filter>
-    </ClInclude>
-    <ClInclude Include="Save.h">
-      <Filter>scenes\tmpSave</Filter>
     </ClInclude>
     <ClInclude Include="Settings.h" />
   </ItemGroup>
