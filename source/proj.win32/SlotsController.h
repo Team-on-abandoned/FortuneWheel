@@ -27,6 +27,7 @@ public:
 	void SetDurationForRoll(float _durationForRoll) { durationForRoll = _durationForRoll; }
 	void SetMaxRotates(float _maxRotates) { maxRotates = _maxRotates; }
 
+	void SetIsAnimationPlaying(bool _isAnimationPlaying) { isAnimationPlaying = _isAnimationPlaying; }
 	bool GetIsAnimationPlaying() { return isAnimationPlaying; }
 
 private:

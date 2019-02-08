@@ -80,11 +80,13 @@ void SlotMachineHandle::HandleMouseUp(cocos2d::Event * event) {
 	if (downMouseOnHandle && pow(e->getCursorX() - handleUp->getPositionX(), 2) + pow(e->getCursorY() - handleUp->getPositionY(), 2) <= pow(handleUp->getContentSize().height / 2, 2)) {
 		downMouseOnHandle = false;
 
+		this->HandleDown();
+		scene->runAction(Sequence::createWithTwoActions(DelayTime::create(1), CallFunc::create([this]() {this->HandleUp(); })));
+
 		if (!slotsController->GetIsAnimationPlaying()) {
+			slotsController->SetIsAnimationPlaying(true);
 			winEffects->Disable();
-			this->HandleDown();
 			tokenInfo->PlayAnimation();
-			scene->runAction(Sequence::createWithTwoActions(DelayTime::create(1), CallFunc::create([this]() {this->HandleUp();})));
 		}
 	}
 }
