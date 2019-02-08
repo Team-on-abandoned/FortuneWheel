@@ -16,6 +16,10 @@ SlotsController::SlotsController() :
 SlotsController::~SlotsController() {
 }
 
+void SlotsController::Link(WinEffects * _winEffects) {
+	winEffects = _winEffects;
+}
+
 void SlotsController::AddSprite(cocos2d::Sprite *sprite) {
 	sprites.push_back(sprite);
 }
@@ -43,7 +47,11 @@ void SlotsController::Roll() {
 	cocos2d::CallFunc* stopAnim = cocos2d::CallFunc::create([this]() {
 		isAnimationPlaying = false;
 	});
-	scene->runAction(cocos2d::Sequence::create(delay, stopAnim, nullptr));
+	cocos2d::CallFunc* checkWin = cocos2d::CallFunc::create([this]() {
+		if (IsWin())
+			winEffects->Enable();
+	});
+	scene->runAction(cocos2d::Sequence::create(delay, stopAnim, checkWin, nullptr));
 }
 
 bool SlotsController::IsWin() {

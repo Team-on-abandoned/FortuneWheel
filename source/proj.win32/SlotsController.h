@@ -1,5 +1,6 @@
 #pragma once
 #include "cocos2d.h"
+#include "WinEffects.h"
 #include <vector>
 #include "Slot.h"
 
@@ -7,6 +8,8 @@ class SlotsController {
 public:
 	SlotsController();
 	~SlotsController();
+
+	void Link(WinEffects *winEffects);
 
 	//Загружає спрайти всіх для слотів
 	void AddSprite(cocos2d::Sprite *sprite);
@@ -30,6 +33,8 @@ private:
 	cocos2d::Scene *scene;
 	std::vector<cocos2d::Sprite*> sprites;
 	std::vector<Slot> slots;
+
+	WinEffects *winEffects;
 
 	int rollCnt;
 	float durationForRoll;

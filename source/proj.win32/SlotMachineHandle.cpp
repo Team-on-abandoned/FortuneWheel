@@ -14,6 +14,8 @@ SlotMachineHandle::~SlotMachineHandle() {
 }
 
 void SlotMachineHandle::Init(cocos2d::Scene * scene, cocos2d::Vec2 handlePos, cocos2d::Vec2 handleDownPos) {
+	this->scene = scene;
+
 	handleUp = Sprite::create("Art\\knob1.png");
 	handleUp->setPosition(handlePos);
 	scene->addChild(handleUp, Settings::z_sprite_handle);
@@ -37,6 +39,26 @@ void SlotMachineHandle::Init(cocos2d::Scene * scene, cocos2d::Vec2 handlePos, co
 	scene->getEventDispatcher()->addEventListenerWithFixedPriority(listener, 1);
 }
 
+void SlotMachineHandle::Link(SlotsController * _slotsController, TokenInfo * _tokenInfo, WinEffects *_winEffects) {
+	slotsController = _slotsController;
+	tokenInfo = _tokenInfo;
+	winEffects = _winEffects;
+}
+
+void SlotMachineHandle::HandleDown() {
+	isHandleDown = true;
+	handleUp->setOpacity(0);
+	handleUpActive->setOpacity(0);
+	handleDown->setOpacity(255);
+}
+
+void SlotMachineHandle::HandleUp() {
+	isHandleDown = false;
+	handleUp->setOpacity(255);
+	handleUpActive->setOpacity(0);
+	handleDown->setOpacity(0);
+}
+
 void SlotMachineHandle::GlowHandle(cocos2d::Event * event) {
 	EventMouse* e = (EventMouse*)event;
 	if (!isHandleDown && pow(e->getCursorX() - handleUp->getPositionX(), 2) + pow(e->getCursorY() - handleUp->getPositionY(), 2) <= pow(handleUp->getContentSize().height / 2, 2)) {
@@ -58,18 +80,11 @@ void SlotMachineHandle::HandleMouseUp(cocos2d::Event * event) {
 	if (downMouseOnHandle && pow(e->getCursorX() - handleUp->getPositionX(), 2) + pow(e->getCursorY() - handleUp->getPositionY(), 2) <= pow(handleUp->getContentSize().height / 2, 2)) {
 		downMouseOnHandle = false;
 
-		//if (!animationPlaying) {
-		//	winLabel->setOpacity(0);
-		//	fireworks[0]->stop();
-		//	fireworks[1]->stop();
-
-		//	animationPlaying = 
-			isHandleDown = true;
-			handleUp->setOpacity(0);
-			handleUpActive->setOpacity(0);
-			handleDown->setOpacity(255);
-
-		//	//PlayCoinAnimation();
-		//}
+		if (!slotsController->GetIsAnimationPlaying()) {
+			winEffects->Disable();
+			this->HandleDown();
+			tokenInfo->PlayAnimation();
+			scene->runAction(Sequence::createWithTwoActions(DelayTime::create(1), CallFunc::create([this]() {this->HandleUp();})));
+		}
 	}
 }

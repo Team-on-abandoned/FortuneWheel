@@ -19,7 +19,6 @@ public:
 	static const int z_sprite_handleGlow = 7;
 	static const int z_sprite_handleDown = 8;
 
-
 	static const int z_label_win = 15;
 	static const int z_particle_fireworks = 16;
 

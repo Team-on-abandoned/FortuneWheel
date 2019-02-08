@@ -30,7 +30,7 @@ void SlotMachineController::StartGame(cocos2d::Scene *scene) {
 	slotsController.AddSlot(scene, GetPosRelativeToCenter(98, -11));
 
 	winEffects.Init(scene, center);
-	
+
 	tokenInfo.Init(scene, 
 		GetPosRelativeToCenter(580, -170), 
 		GetPosRelativeToCenter(285, -13),
@@ -39,6 +39,10 @@ void SlotMachineController::StartGame(cocos2d::Scene *scene) {
 	);
 
 	slotMachineHandle.Init(scene, GetPosRelativeToCenter(420, 115), GetPosRelativeToCenter(420, 12));
+
+	tokenInfo.Link(&slotsController);
+	slotsController.Link(&winEffects);
+	slotMachineHandle.Link(&slotsController, &tokenInfo, &winEffects);
 }
 
 void SlotMachineController::CreateStaticSprites() {
@@ -103,15 +107,5 @@ Vec2 SlotMachineController::GetPosRelativeToCenter(int x, int y) {
 }
 
 void SlotMachineController::MenuCloseCallback(Ref* pSender) {
-	//Director::getInstance()->end();
-
-	if (!slotsController.GetIsAnimationPlaying()) {
-		if (slotsController.IsWin())
-			winEffects.Enable();
-		else
-			winEffects.Disable();
-
-		slotsController.Roll();
-		tokenInfo.PlayAnimation();
-	}
+	Director::getInstance()->end();
 }

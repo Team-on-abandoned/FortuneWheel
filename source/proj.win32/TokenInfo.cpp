@@ -18,30 +18,29 @@ void TokenInfo::Init(cocos2d::Scene *scene, cocos2d::Vec2 _tokenStartPos, cocos2
 	scene->addChild(insertToken, Settings::z_sprite_insertToken);
 }
 
+void TokenInfo::Link(SlotsController * _slotsController) {
+	slotsController = _slotsController;
+}
+
 void TokenInfo::PlayAnimation() {
 	token->runAction(Sequence::create(
-		Spawn::create(
-			MoveTo::create(2, tokenEndPos),
-			Sequence::create(
-				DelayTime::create(1),
-				CallFunc::create([this]() {
-					/*handleUp->setOpacity(255);
-					handleDown->setOpacity(0);
-					handleIsDown = false;*/
-				}),
-				nullptr
-			),
-			nullptr
-		),
+		MoveTo::create(2, tokenEndPos),
 
 		CallFunc::create([this]() {
 			token->setPosition(tokenStartPos);
 			insertToken->setPosition(tokenInsertStartPos);
 			insertToken->setOpacity(255);
 
+
 			insertToken->runAction(Sequence::create(
 				MoveTo::create(2, tokenInsertEndPos),
-				FadeOut::create(2),
+				Spawn::create(
+					FadeOut::create(2),
+					CallFunc::create([this]() {
+						slotsController->Roll();
+					}),
+					nullptr
+				),
 				nullptr
 			));
 		}),
