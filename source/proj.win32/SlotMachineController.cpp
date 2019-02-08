@@ -141,5 +141,13 @@ Vec2 SlotMachineController::GetPosRelativeToCenter(int x, int y) {
 
 void SlotMachineController::MenuCloseCallback(Ref* pSender) {
 	//Director::getInstance()->end();
-	slotsController.Roll();
+
+	if (!slotsController.GetIsAnimationPlaying()) {
+		if (slotsController.IsWin())
+			winEffects.Enable();
+		else
+			winEffects.Disable();
+
+		slotsController.Roll();
+	}
 }

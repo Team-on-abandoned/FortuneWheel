@@ -14,15 +14,17 @@ public:
 	void AddSlot(cocos2d::Scene *scene, cocos2d::Vec2 slotPos);
 
 	//Робить кожний 2 виклик Roll() виграшним
-	void EnableDebugMode(){ isInDebugMode = true; }
-	void DisableDebugMode(){ isInDebugMode = false; }
+	void EnableDebugMode() { isInDebugMode = true; }
+	void DisableDebugMode() { isInDebugMode = false; }
 
 	void Roll();
 
 	bool IsWin();
 
 	void SetDurationForRoll(float _durationForRoll) { durationForRoll = _durationForRoll; }
-	void SetMaxRotates(float _maxRotates){ maxRotates = _maxRotates;}
+	void SetMaxRotates(float _maxRotates) { maxRotates = _maxRotates; }
+
+	bool GetIsAnimationPlaying() { return isAnimationPlaying; }
 
 private:
 	cocos2d::Scene *scene;
@@ -32,6 +34,6 @@ private:
 	int rollCnt;
 	float durationForRoll;
 	char  maxRotates;
-
+	bool isAnimationPlaying;
 	bool isInDebugMode;
 };

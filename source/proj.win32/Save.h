@@ -12,18 +12,13 @@ class Save : public cocos2d::Scene {
 	char currentSlot[3];
 
 	void PlayCoinAnimation();
-	void RollSlotRec(char slotNum, float duration, char rotates);
 public:
 	static cocos2d::Scene* createScene();
 
 	CREATE_FUNC(Save);
 	virtual bool init();
 
-
 	void GlowHandle(cocos2d::Event *event);
 	void HandleMouseDown(cocos2d::Event *event);
 	void HandleMouseUp(cocos2d::Event *event);
-
-	void RollSlots();
-	void RollSlot(char slotNum, float duration, char rotates);
 };
