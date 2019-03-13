@@ -10,8 +10,9 @@
 * Handle must go down, token must be inserted in the draw.
 * Run the slot machine
 * If machine have 3 simular lines, show "You win!"
-* All the necessary videos in Cocos2D on C++.
-Graphic design is glued to a sheet. Runtime is 1 week (or faster).
+* Complete the test using Cocos2D on C ++.
+
+Graphic assets are provided. Time limit is 1 week (or faster).
  
 ### UA 
 Примітки:
@@ -22,7 +23,7 @@ Graphic design is glued to a sheet. Runtime is 1 week (or faster).
  * програти анімацію візуального опускання ручки, запустити монетку у отвір.
  * запустити слот машину
  * у результаті однакової лінії, показати напис "You win!"
- * Все це необхідно виконати в Cocos2D на c++.
+ * Все це необхідно виконати в Cocos2D на C++.
 Графічні асети прикріплено до листа. Термін виконання – 1 тиждень (або швидше).
 
 ![](readme/1.png)
